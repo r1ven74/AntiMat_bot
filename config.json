@@ -1,6 +1,6 @@
 {
-    "block_mats": 1,
-    "block_links": 1,
-    "block_spam": 1,
-    "token": "YOUR_BOT_TOKEN"
+    "block_mats": "0",
+    "block_links": "0",
+    "block_spam": "0",
+    "token": "8108535378:AAGuw7Ja8njdkW-ZH_qLFIEcguF4uSLUw8o"
 }

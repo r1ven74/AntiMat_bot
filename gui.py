@@ -6,7 +6,7 @@ class ConfigGUI:
     def __init__(self):
         self.root = ctk.CTk()
         self.root.title("Настройки бота")
-        self.root.geometry("600x600")
+        self.root.geometry("500x500")
         self.config = {}
         self.lock = threading.Lock()
         self.create_widgets()

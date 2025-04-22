@@ -11,10 +11,10 @@ logger = logging.getLogger(__name__)
 
 CONFIG_FILE = 'config.json'
 DEFAULT_CONFIG = {
-    'block_mats': True,
-    'block_links': True,
-    'block_spam': True,
-    'token': 'YOUR_BOT_TOKEN'
+    'block_mats': False,
+    'block_links': False,
+    'block_spam': False,
+    'token': '8108535378:AAGuw7Ja8njdkW-ZH_qLFIEcguF4uSLUw8'
 }
 
 
@@ -46,6 +46,13 @@ class BotConfig:
         with self.lock:
             return self.config.get(key)
 
+def update_json_file(file_path, key, new_value):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    if key in data:
+        data[key] = new_value
+    with open(file_path, 'w', encoding='utf-8') as file:
+        json.dump(data, file, ensure_ascii=False, indent=4)
 
 config = BotConfig()
 bot = telebot.TeleBot(config.get('token'))
@@ -112,7 +119,6 @@ def handle_message(message):
     logger.info(
         f"Current settings: mats={config.get('block_mats')}, links={config.get('block_links')}, spam={config.get('block_spam')}")
 
-    # Check blocks
     if user_id in user_blocks:
         for blocked_text, end_time in user_blocks[user_id].items():
             if blocked_text == normalized and now < end_time:
@@ -124,7 +130,6 @@ def handle_message(message):
                     logger.error(f"ошибка удаления {e}")
                 return
 
-    # Spam check
     if config.get('block_spam'):
         if spam_list := check_spam(user_id, text, message.message_id):
             for msg_id in spam_list:
@@ -137,7 +142,6 @@ def handle_message(message):
             logger.info(f"удалено {len(spam_list)} спам сообщ")
             return
 
-    # Bad words check
     if config.get('block_mats') and any(word in normalized for word in mats):
         try:
             bot.delete_message(message.chat.id, message.message_id)
@@ -146,7 +150,6 @@ def handle_message(message):
         except Exception as e:
             logger.error(f"ошибка удаления мата {e}")
 
-    # Links check
     if config.get('block_links') and URL_PATTERN.search(text):
         try:
             bot.delete_message(message.chat.id, message.message_id)
