@@ -14,7 +14,7 @@ DEFAULT_CONFIG = {
     'block_mats': False,
     'block_links': False,
     'block_spam': False,
-    'token': '8108535378:AAGuw7Ja8njdkW-ZH_qLFIEcguF4uSLUw8'
+    'token': '-'
 }
 
 
